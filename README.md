@@ -35,7 +35,7 @@ Parsing GS1 data is simple. Just import `GS1Parser` and initialize the `GS1Parse
 import GS1Parser
 
 do {
-    let parser = try GS1Parser()
+    var parser = try GS1Parser()
     
     // Parse the input data
     parser.input = "(01)03453120000011(10)ABC123"
@@ -65,7 +65,7 @@ do {
 `GS1Parser` automatically validates the check digit and formats the GTIN.
 
 ```swift
-let parser = try GS1Parser()
+var parser = try GS1Parser()
 parser.input = "9501101530003" // 13-digit GTIN
 parser.parse()
 
@@ -76,7 +76,7 @@ print(parser.dataString)
 ### Parsing a GS1 Digital Link URI
 
 ```swift
-let parser = try GS1Parser()
+var parser = try GS1Parser()
 parser.input = "https://example.com/01/09501101530003/10/ABC"
 parser.parse()
 
@@ -87,7 +87,7 @@ print(parser.aiDataString ?? "N/A")
 ### Generating a Digital Link with a Custom Domain
 
 ```swift
-let parser = try GS1Parser()
+var parser = try GS1Parser()
 parser.input = "(01)09501101530003"
 try parser.parse()
 
