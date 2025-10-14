@@ -399,15 +399,7 @@ public struct GS1Parser: ~Copyable {
             cString = gs1_encoder_getDLuri(context, nil)
         }
         
-        guard let cString else {
-            if let errorMessage {
-                throw GS1ParserError.internalError(errorMessage)
-            } else if let linterErrorMessage {
-                throw GS1ParserError.linterError(linterErrorMessage)
-            } else {
-                throw GS1ParserError.internalError("An unknown error occurred.")
-            }
-        }
+        guard let cString else { throw error }
         return String(cString: cString)
     }
     
@@ -443,6 +435,15 @@ public struct GS1Parser: ~Copyable {
         return String(cString: cString)
     }
     
+    private var error: GS1ParserError {
+        if let errorMessage {
+            return GS1ParserError.internalError(errorMessage)
+        } else if let linterErrorMessage {
+            return GS1ParserError.linterError(linterErrorMessage)
+        }
+        return GS1ParserError.internalError("An unknown error occurred.")
+    }
+    
     // MARK: Configuration Helpers
     
     private func isValidationEnabled(_ validation: GS1Validation) -> Bool {
@@ -462,45 +463,21 @@ public struct GS1Parser: ~Copyable {
         let success = data.withCString { cString in
             gs1_encoder_setDataStr(context, UnsafeMutablePointer(mutating: cString))
         }
-        guard success else {
-            if let errorMessage {
-                throw GS1ParserError.internalError(errorMessage)
-            } else if let linterErrorMessage {
-                throw GS1ParserError.linterError(linterErrorMessage)
-            } else {
-                throw GS1ParserError.internalError("An unknown error occurred.")
-            }
-        }
+        guard success else { throw error }
     }
     
     private func setAIdataString(_ aiData: String) throws {
         let success = aiData.withCString { cString in
             gs1_encoder_setAIdataStr(context, UnsafeMutablePointer(mutating: cString))
         }
-        guard success else {
-            if let errorMessage {
-                throw GS1ParserError.internalError(errorMessage)
-            } else if let linterErrorMessage {
-                throw GS1ParserError.linterError(linterErrorMessage)
-            } else {
-                throw GS1ParserError.internalError("An unknown error occurred.")
-            }
-        }
+        guard success else { throw error }
     }
     
     private func setScanData(_ scanData: String) throws {
         let success = scanData.withCString { cString in
             gs1_encoder_setScanData(context, UnsafeMutablePointer(mutating: cString))
         }
-        guard success else {
-            if let errorMessage {
-                throw GS1ParserError.internalError(errorMessage)
-            } else if let linterErrorMessage {
-                throw GS1ParserError.linterError(linterErrorMessage)
-            } else {
-                throw GS1ParserError.internalError("An unknown error occurred.")
-            }
-        }
+        guard success else { throw error }
     }
     
     // MARK: Output Helpers
